@@ -1,0 +1,1280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A curated catalog of popular and powerful Python one-liners, complete with code search, instant click-to-copy, and live browser execution using WebAssembly.">
+    <title>Python One-Liners Explorer</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+    <!-- FontAwesome for Premium Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- PrismJS syntax highlighting (Tomorrow Night Theme) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    
+    <!-- PyScript release -->
+    <link rel="stylesheet" href="https://pyscript.net/releases/2024.1.1/core.css">
+    <script type="module" src="https://pyscript.net/releases/2024.1.1/core.js"></script>
+
+    <!-- Custom CSS Stylesheet for Rich Aesthetics -->
+    <style>
+        :root {
+            --bg-primary: #04060e;
+            --bg-surface: rgba(10, 15, 30, 0.55);
+            --bg-surface-solid: #090e1a;
+            --border-primary: rgba(255, 255, 255, 0.08);
+            --border-active: rgba(255, 107, 0, 0.4);
+            
+            --accent-orange: #ff6b00;
+            --accent-orange-glow: rgba(255, 107, 0, 0.45);
+            --accent-blue: #0099ff;
+            --accent-blue-glow: rgba(0, 153, 255, 0.45);
+            --accent-green: #10b981;
+            --accent-green-glow: rgba(16, 185, 129, 0.4);
+            
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --text-muted: #475569;
+            
+            --font-main: 'Outfit', sans-serif;
+            --font-code: 'JetBrains Mono', monospace;
+            
+            --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Scrollbar styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(4, 6, 14, 0.3);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-primary);
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(255, 107, 0, 0.12) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(0, 153, 255, 0.12) 0%, transparent 40%),
+                radial-gradient(circle at 50% 50%, rgba(9, 14, 26, 1) 0%, rgba(4, 6, 14, 1) 100%);
+            background-attachment: fixed;
+            color: var(--text-primary);
+            font-family: var(--font-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow-x: hidden;
+        }
+
+        header {
+            width: 100%;
+            max-width: 1200px;
+            padding: 3rem 1.5rem 1.5rem 1.5rem;
+            text-align: center;
+            box-sizing: border-box;
+        }
+
+        .header-logo {
+            margin-bottom: 0.5rem;
+            animation: float 6s ease-in-out infinite;
+            display: inline-block;
+        }
+        
+        .header-logo svg {
+            width: 86px;
+            height: 86px;
+            filter: drop-shadow(0 0 16px rgba(0, 153, 255, 0.5)) drop-shadow(0 0 24px rgba(255, 107, 0, 0.35));
+            transition: var(--transition-smooth);
+            cursor: pointer;
+        }
+        
+        .header-logo svg:hover {
+            transform: scale(1.08);
+            filter: drop-shadow(0 0 20px rgba(0, 153, 255, 0.75)) drop-shadow(0 0 30px rgba(255, 107, 0, 0.5));
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-8px); }
+        }
+
+        h1 {
+            font-weight: 800;
+            font-size: 2.8rem;
+            margin: 0 0 0.5rem 0;
+            letter-spacing: -0.025em;
+            background: linear-gradient(to right, #ffffff, #fed7aa);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 1.15rem;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+            font-weight: 300;
+        }
+
+        main {
+            width: 100%;
+            max-width: 1200px;
+            padding: 0 1.5rem 4rem 1.5rem;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        /* Glassmorphism Panel card */
+        .glass-panel {
+            background: var(--bg-surface);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--border-primary);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+            padding: 2rem;
+            transition: var(--transition-smooth);
+        }
+
+        .glass-panel:hover {
+            border-color: rgba(255, 255, 255, 0.12);
+            box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.5);
+        }
+
+        /* Grid Layout */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 2rem;
+        }
+
+        .dashboard-grid > section {
+            min-width: 0;
+        }
+
+        @media (max-width: 900px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+            .dashboard-grid > section {
+                min-width: unset;
+            }
+        }
+
+        /* Sidebar Control Center */
+        .control-center {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+
+        label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--accent-blue);
+        }
+
+        /* Search input wrapper */
+        .search-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .search-wrapper i {
+            position: absolute;
+            left: 1rem;
+            color: var(--text-muted);
+            font-size: 1rem;
+            transition: var(--transition-smooth);
+        }
+
+        .search-input {
+            width: 100%;
+            height: 52px;
+            background: rgba(0, 0, 0, 0.35);
+            border: 1px solid var(--border-primary);
+            border-radius: 12px;
+            padding: 0 1rem 0 2.8rem;
+            color: var(--text-primary);
+            font-family: var(--font-main);
+            font-size: 1rem;
+            box-sizing: border-box;
+            transition: var(--transition-smooth);
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--accent-orange);
+            box-shadow: 0 0 0 3px var(--accent-orange-glow);
+        }
+
+        .search-input:focus + i {
+            color: var(--accent-orange);
+        }
+
+        /* Category pills list */
+        .category-pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .category-pill {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-primary);
+            border-radius: 50px;
+            padding: 0.5rem 1rem;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            font-weight: 500;
+            border-style: solid;
+        }
+
+        .category-pill:hover {
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--text-primary);
+        }
+
+        .category-pill.active {
+            background: var(--accent-orange);
+            color: var(--text-primary);
+            border-color: var(--accent-orange);
+            box-shadow: 0 0 12px var(--accent-orange-glow);
+        }
+
+        /* Selector dropdown styled - Height Locked */
+        .custom-select {
+            width: 100%;
+            height: 52px;
+            background: rgba(0, 0, 0, 0.35);
+            border: 1px solid var(--border-primary);
+            border-radius: 12px;
+            padding: 0 2.8rem 0 1rem;
+            color: var(--text-primary);
+            font-family: var(--font-main);
+            font-size: 1rem;
+            box-sizing: border-box;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            appearance: none;
+            -webkit-appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ff6b00' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            background-size: 1.2rem;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+            line-height: 50px;
+        }
+
+        .custom-select:focus {
+            outline: none;
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 0 3px var(--accent-blue-glow);
+        }
+
+        .custom-select option {
+            background-color: var(--bg-surface-solid);
+            color: var(--text-primary);
+            padding: 0.5rem;
+            font-size: 1rem;
+        }
+
+        /* Detail Display Section */
+        .detail-viewer {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .detail-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+        }
+
+        .detail-title-group h2 {
+            margin: 0;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            letter-spacing: -0.01em;
+        }
+
+        .detail-category-badge {
+            background: rgba(0, 153, 255, 0.1);
+            color: var(--accent-blue);
+            border: 1px solid rgba(0, 153, 255, 0.25);
+            padding: 0.3rem 0.8rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            box-shadow: 0 0 8px rgba(0, 153, 255, 0.05);
+        }
+
+        /* Code block container */
+        .code-container {
+            position: relative;
+            background: rgba(0, 0, 0, 0.45);
+            border: 1px solid var(--border-primary);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: var(--transition-smooth);
+        }
+
+        .code-container:hover {
+            border-color: var(--border-active);
+            box-shadow: 0 0 15px rgba(255, 107, 0, 0.1);
+        }
+
+        .code-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.6rem 1rem;
+            background: rgba(255, 255, 255, 0.02);
+            border-bottom: 1px solid var(--border-primary);
+        }
+
+        .lang-indicator {
+            font-family: var(--font-code);
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            letter-spacing: 0.1em;
+        }
+
+        /* Copy Button Styles */
+        .btn-copy {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-secondary);
+            border-radius: 6px;
+            padding: 0.4rem 0.8rem;
+            font-size: 0.8rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            transition: var(--transition-smooth);
+            font-family: var(--font-main);
+            font-weight: 500;
+        }
+
+        .btn-copy:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-copy.copied {
+            background: var(--accent-green);
+            color: #ffffff;
+            border-color: var(--accent-green);
+            box-shadow: 0 0 10px var(--accent-green-glow);
+        }
+
+        /* Pre and Code block style overrides */
+        .code-container pre {
+            margin: 0 !important;
+            padding: 1.2rem !important;
+            background: transparent !important;
+            overflow-x: auto;
+        }
+
+        .code-container code {
+            font-family: var(--font-code) !important;
+            font-size: 0.95rem !important;
+            line-height: 1.6 !important;
+        }
+
+        .explanation-box {
+            background: rgba(255, 255, 255, 0.015);
+            border-left: 3px solid var(--accent-orange);
+            padding: 1rem 1.2rem;
+            border-radius: 0 8px 8px 0;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        /* Variables Customizer Panel */
+        .variables-customizer {
+            background: rgba(0, 153, 255, 0.03);
+            border: 1px solid rgba(0, 153, 255, 0.2);
+            border-radius: 10px;
+            padding: 1.2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            transition: var(--transition-smooth);
+            box-shadow: 0 0 15px rgba(0, 153, 255, 0.03);
+        }
+
+        .variables-customizer:hover {
+            border-color: rgba(0, 153, 255, 0.4);
+            box-shadow: 0 0 20px rgba(0, 153, 255, 0.08);
+        }
+
+        .customizer-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .customizer-title {
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--accent-blue);
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .customizer-title i {
+            color: var(--accent-orange);
+            font-size: 1rem;
+        }
+
+        .customizer-hint {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-family: var(--font-code);
+        }
+
+        .no-params-msg {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            font-style: italic;
+        }
+
+        .code-actions {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            flex-wrap: wrap;
+        }
+
+        /* Interactive Console */
+        .console-container {
+            background: #03050a;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .console-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.6rem 1rem;
+            background: rgba(255, 255, 255, 0.01);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .console-title {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .console-title i {
+            color: var(--accent-orange);
+        }
+
+        .btn-run {
+            background: linear-gradient(135deg, var(--accent-orange), #e05e00);
+            color: #ffffff;
+            border: none;
+            border-radius: 6px;
+            padding: 0.4rem 1rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            transition: var(--transition-smooth);
+            box-shadow: 0 0 10px rgba(255, 107, 0, 0.2);
+        }
+
+        .btn-run:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 0 15px var(--accent-orange-glow);
+        }
+
+        .btn-run:active {
+            transform: translateY(1px);
+        }
+
+        .console-playground {
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        /* Input argument styles */
+        .playground-inputs {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .playground-input-row {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .playground-input-row span {
+            font-family: var(--font-code);
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            min-width: 100px;
+        }
+
+        .arg-input {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-primary);
+            border-radius: 6px;
+            padding: 0.4rem 0.8rem;
+            color: var(--text-primary);
+            font-family: var(--font-code);
+            font-size: 0.85rem;
+            transition: var(--transition-smooth);
+        }
+
+        .arg-input:focus {
+            outline: none;
+            border-color: var(--accent-blue);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .console-output-box {
+            background: #010205;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            border-radius: 6px;
+            padding: 1rem;
+            min-height: 80px;
+            max-height: 320px;
+            overflow-y: auto;
+            margin: 0;
+            font-family: var(--font-code);
+            font-size: 0.85rem;
+            color: #10b981;
+            white-space: pre-wrap;
+            box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.8);
+        }
+
+        .console-output-box.error {
+            color: #ef4444;
+        }
+
+        .console-output-box.warning {
+            color: #f59e0b;
+            border-left: 3px solid #f59e0b;
+        }
+
+        /* Drag and Drop Zone styling */
+        .drop-zone {
+            background: rgba(0, 153, 255, 0.03);
+            border: 2px dashed rgba(0, 153, 255, 0.3);
+            border-radius: 10px;
+            padding: 1.2rem 1rem;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.3rem;
+            position: relative;
+        }
+
+        .drop-zone:hover, .drop-zone.dragover {
+            background: rgba(0, 153, 255, 0.08);
+            border-color: var(--accent-orange);
+            box-shadow: 0 0 15px rgba(255, 107, 0, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .drop-icon {
+            font-size: 1.8rem;
+            color: var(--accent-blue);
+            margin-bottom: 0.2rem;
+            transition: var(--transition-smooth);
+        }
+
+        .drop-zone:hover .drop-icon {
+            color: var(--accent-orange);
+            transform: scale(1.1);
+        }
+
+        .drop-text {
+            font-size: 0.85rem;
+            color: var(--text-primary);
+            margin: 0;
+        }
+
+        .drop-hint {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .file-list-container {
+            margin-top: 0.8rem;
+            background: rgba(0, 0, 0, 0.35);
+            border: 1px solid var(--border-primary);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .file-list-header {
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            padding: 0.5rem 0.8rem;
+            background: rgba(255, 255, 255, 0.02);
+            border-bottom: 1px solid var(--border-primary);
+            letter-spacing: 0.05em;
+        }
+
+        .virtual-file-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            max-height: 140px;
+            overflow-y: auto;
+        }
+
+        .file-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 0.8rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            font-family: var(--font-code);
+        }
+
+        .file-item:last-child {
+            border-bottom: none;
+        }
+
+        .file-item:hover {
+            background: rgba(255, 255, 255, 0.03);
+            color: var(--text-primary);
+        }
+
+        .file-name {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .file-name i {
+            color: var(--accent-cyan);
+        }
+
+        .file-meta {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            flex-shrink: 0;
+        }
+
+        .file-size {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+        }
+
+        .btn-delete-file {
+            background: transparent;
+            border: none;
+            color: #ef4444;
+            cursor: pointer;
+            font-size: 0.8rem;
+            padding: 0.1rem 0.4rem;
+            border-radius: 3px;
+            transition: var(--transition-smooth);
+            opacity: 0.7;
+        }
+
+        .btn-delete-file:hover {
+            opacity: 1;
+            background: rgba(239, 68, 68, 0.15);
+        }
+
+        /* Smart File Selector & Paste Buffer styling */
+        .custom-paste-textarea {
+            width: 100%;
+            background: #04060e;
+            border: 1px solid rgba(255, 107, 0, 0.3);
+            border-radius: 6px;
+            color: #10b981;
+            font-family: var(--font-code);
+            font-size: 0.85rem;
+            padding: 0.6rem;
+            line-height: 1.4;
+            resize: vertical;
+            min-height: 90px;
+            box-shadow: inset 0 2px 6px rgba(0,0,0,0.8);
+            transition: var(--transition-smooth);
+        }
+        .custom-paste-textarea:focus {
+            outline: none;
+            border-color: var(--accent-orange);
+            box-shadow: 0 0 10px rgba(255, 107, 0, 0.2), inset 0 2px 6px rgba(0,0,0,0.8);
+        }
+        .arg-file-selector {
+            background-color: rgba(0, 153, 255, 0.08) !important;
+            border: 1px solid rgba(0, 153, 255, 0.3) !important;
+            color: var(--text-primary) !important;
+            border-radius: 6px;
+            transition: var(--transition-smooth);
+            cursor: pointer;
+        }
+        .arg-file-selector:hover {
+            border-color: var(--accent-orange) !important;
+            box-shadow: 0 0 10px rgba(255, 107, 0, 0.15);
+        }
+        .regex-example-pill:hover {
+            background: rgba(255, 107, 0, 0.25) !important;
+            border-color: var(--accent-orange) !important;
+            color: #fff !important;
+            transform: translateY(-1px);
+            box-shadow: 0 0 10px rgba(255, 107, 0, 0.3);
+        }
+
+        /* Footer styling */
+        footer {
+            margin-top: auto;
+            padding: 2rem;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            width: 100%;
+            border-top: 1px solid var(--border-primary);
+            box-sizing: border-box;
+            background: rgba(4, 6, 14, 0.8);
+        }
+
+        footer a {
+            color: var(--accent-blue);
+            text-decoration: none;
+            transition: var(--transition-smooth);
+        }
+
+        footer a:hover {
+            color: var(--text-primary);
+            text-shadow: 0 0 8px var(--accent-blue-glow);
+        }
+
+        /* Mode Switch Toggle Tabs */
+        .mode-toggle-container {
+            display: inline-flex;
+            background: rgba(9, 14, 26, 0.85);
+            border: 1px solid var(--border-primary);
+            border-radius: 30px;
+            padding: 0.35rem;
+            margin-top: 1.5rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(10px);
+        }
+
+        .mode-tab {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            font-family: var(--font-main);
+            font-size: 0.95rem;
+            font-weight: 600;
+            padding: 0.6rem 1.4rem;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .mode-tab:hover {
+            color: var(--text-primary);
+        }
+
+        .mode-tab.active {
+            background: linear-gradient(135deg, var(--accent-orange), var(--accent-blue));
+            color: #ffffff;
+            box-shadow: 0 4px 15px rgba(255, 107, 0, 0.4);
+        }
+
+        /* Full Python Sandbox Mode Layout */
+        .sandbox-view-container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto 3rem auto;
+            padding: 0 1.5rem;
+            box-sizing: border-box;
+        }
+
+        .full-sandbox-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            padding: 2rem;
+        }
+
+        .sandbox-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            padding-bottom: 1.2rem;
+        }
+
+        .sandbox-title {
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .sandbox-actions {
+            display: flex;
+            gap: 0.7rem;
+            flex-wrap: wrap;
+        }
+
+        .btn-run-sandbox {
+            background: linear-gradient(135deg, var(--accent-green), #059669) !important;
+            border: 1px solid rgba(16, 185, 129, 0.5) !important;
+            color: #ffffff !important;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.35);
+        }
+
+        .btn-run-sandbox:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.55);
+        }
+
+        .sandbox-editor-wrapper {
+            display: flex;
+            flex-direction: column;
+            border: 1px solid rgba(0, 153, 255, 0.35);
+            border-radius: 12px;
+            overflow: hidden;
+            background: rgba(5, 8, 16, 0.95);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .editor-header-bar {
+            background: rgba(14, 23, 42, 0.95);
+            padding: 0.6rem 1rem;
+            border-bottom: 1px solid rgba(0, 153, 255, 0.25);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
+        }
+
+        .editor-tab {
+            color: var(--accent-cyan);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .editor-hint {
+            color: var(--text-muted);
+            font-size: 0.78rem;
+        }
+
+        .sandbox-textarea {
+            width: 100%;
+            min-height: 340px;
+            padding: 1.2rem;
+            box-sizing: border-box;
+            background: transparent;
+            border: none;
+            color: var(--text-primary);
+            font-family: var(--font-mono);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            resize: vertical;
+            outline: none;
+            tab-size: 4;
+            white-space: pre;
+            overflow-x: auto;
+        }
+
+        .sandbox-textarea::placeholder {
+            color: rgba(255, 255, 255, 0.25);
+        }
+
+        .sandbox-terminal-wrapper {
+            display: flex;
+            flex-direction: column;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        /* PyScript loading overrides */
+        #pyscript-loading {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+        }
+
+        /* Flex wrap fixes */
+        .info-pill-container {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-logo">
+            <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Cyber Circuit Security Shield">
+                <defs>
+                    <linearGradient id="shield-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="var(--accent-orange)" />
+                        <stop offset="50%" stop-color="var(--accent-blue)" />
+                        <stop offset="100%" stop-color="var(--accent-green)" />
+                    </linearGradient>
+                    <linearGradient id="shield-inner-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" stop-color="rgba(0, 153, 255, 0.22)" />
+                        <stop offset="100%" stop-color="rgba(16, 185, 129, 0.04)" />
+                    </linearGradient>
+                </defs>
+                <!-- Outer Cyber Shield Frame -->
+                <path d="M50 4 L88 20 C88 56 75 82 50 96 C25 82 12 56 12 20 Z" fill="url(#shield-inner-grad)" stroke="url(#shield-grad)" stroke-width="3.5" stroke-linejoin="round" />
+                <!-- Inner High-Tech Bevel -->
+                <path d="M50 11 L80 24 C80 53 69 74 50 87 C31 74 20 53 20 24 Z" fill="none" stroke="rgba(255, 255, 255, 0.18)" stroke-width="1.5" stroke-dasharray="4 3" />
+                <!-- Central Microchip Core -->
+                <rect x="40" y="38" width="20" height="20" rx="4" fill="var(--bg-card)" stroke="var(--accent-blue)" stroke-width="2.5" />
+                <circle cx="50" cy="48" r="3.5" fill="var(--accent-orange)" />
+                <!-- Circuit Paths North -->
+                <path d="M50 38 L50 22 M50 22 L42 16 M50 22 L58 16" stroke="var(--accent-orange)" stroke-width="2" stroke-linecap="round" />
+                <circle cx="42" cy="16" r="2.5" fill="var(--accent-orange)" />
+                <circle cx="58" cy="16" r="2.5" fill="var(--accent-orange)" />
+                <!-- Circuit Paths West -->
+                <path d="M40 48 L26 48 M26 48 L20 42 M26 48 L26 62 L33 68" stroke="var(--accent-blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                <circle cx="20" cy="42" r="2.5" fill="var(--accent-blue)" />
+                <circle cx="33" cy="68" r="2.5" fill="var(--accent-blue)" />
+                <!-- Circuit Paths East -->
+                <path d="M60 48 L74 48 M74 48 L80 42 M74 48 L74 62 L67 68" stroke="var(--accent-green)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                <circle cx="80" cy="42" r="2.5" fill="var(--accent-green)" />
+                <circle cx="67" cy="68" r="2.5" fill="var(--accent-green)" />
+                <!-- Circuit Paths South -->
+                <path d="M50 58 L50 75 M50 75 L43 83 M50 75 L57 83" stroke="url(#shield-grad)" stroke-width="2" stroke-linecap="round" />
+                <circle cx="43" cy="83" r="2" fill="var(--accent-orange)" />
+                <circle cx="57" cy="83" r="2" fill="var(--accent-green)" />
+            </svg>
+        </div>
+        <h1>Python One-Liners Hub</h1>
+        <p class="subtitle">An elegant repository of popular and powerful Python one-liners. Browse, search, click to copy, and run them interactively inside your browser.</p>
+        <div class="mode-toggle-container">
+            <button class="mode-tab active" id="tab-hub" onclick="switchMode('hub')">
+                <i class="fa-solid fa-bolt"></i> One-Liners Hub Mode
+            </button>
+            <button class="mode-tab" id="tab-sandbox" onclick="switchMode('sandbox')">
+                <i class="fa-solid fa-terminal"></i> Full Python Sandbox Mode
+            </button>
+        </div>
+    </header>
+
+    <main>
+        <!-- One-Liners Hub View (Active by default) -->
+        <div id="hub-view" class="hub-view-container">
+            <div class="dashboard-grid">
+            
+            <!-- Left Grid: Search, Filter, Select -->
+            <section class="glass-panel control-center">
+                <div class="form-group">
+                    <label for="search-box">Search One-Liners</label>
+                    <div class="search-wrapper">
+                        <input type="text" id="search-box" class="search-input" placeholder="Type keywords, e.g. sort, fibonacci, file...">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Filter by Category</label>
+                    <div class="category-pills" id="category-container">
+                        <!-- Category pills will be dynamically generated/managed -->
+                        <button class="category-pill active" data-category="all">All</button>
+                        <button class="category-pill" data-category="algorithms">Algorithms</button>
+                        <button class="category-pill" data-category="comprehensions">Comprehensions</button>
+                        <button class="category-pill" data-category="strings">Strings</button>
+                        <button class="category-pill" data-category="math">Math</button>
+                        <button class="category-pill" data-category="security">Security</button>
+                        <button class="category-pill" data-category="web">Web Hosting</button>
+                        <button class="category-pill" data-category="files">Data &amp; Files</button>
+                        <button class="category-pill" data-category="search">Search Files</button>
+                        <button class="category-pill" data-category="utilities">Utilities</button>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="one-liner-select">Select a One-Liner</label>
+                    <select id="one-liner-select" class="custom-select">
+                        <!-- Populated by PyScript -->
+                    </select>
+                </div>
+
+                <div class="form-group" style="margin-top: 1.5rem;">
+                    <label style="display: flex; justify-content: space-between; align-items: center;">
+                        <span><i class="fa-solid fa-folder-open" style="color: var(--accent-orange); margin-right: 0.4rem;"></i> Virtual Workspace Files</span>
+                        <span style="font-size: 0.7rem; color: var(--text-muted); text-transform: none; font-weight: normal;">in-memory WASM FS</span>
+                    </label>
+                    <div id="drop-zone" class="drop-zone" title="Click or drag files here to upload to PyScript virtual filesystem">
+                        <i class="fa-solid fa-cloud-arrow-up drop-icon"></i>
+                        <p class="drop-text">Drag &amp; drop <strong>.txt, .csv, .md</strong> files here</p>
+                        <span class="drop-hint">or click to browse local computer</span>
+                    </div>
+                    <input type="file" id="file-input" multiple accept=".txt,.csv,.md,.log,.json,.tsv" style="display: none;">
+                    
+                    <div class="file-list-container">
+                        <div class="file-list-header">AVAILABLE FILES IN SANDBOX:</div>
+                        <ul id="virtual-file-list" class="virtual-file-list">
+                            <li class="file-item empty-state">Initializing Virtual Filesystem...</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Right Grid: Code detail and interactive sandbox -->
+            <section class="glass-panel detail-viewer">
+                <div class="detail-header">
+                    <div class="detail-title-group">
+                        <h2 id="one-liner-title">Loading Hub...</h2>
+                    </div>
+                    <div class="info-pill-container">
+                        <span class="detail-category-badge" id="one-liner-category">Category</span>
+                    </div>
+                </div>
+
+                <div class="explanation-box" id="one-liner-description">
+                    Initializing... PyScript is loading Python libraries and runtime.
+                </div>
+
+                <!-- Customizable Parameters BEFORE copying/running -->
+                <div class="variables-customizer">
+                    <div class="customizer-header">
+                        <span class="customizer-title">
+                            <i class="fa-solid fa-sliders"></i>
+                            Customize Script Variables
+                        </span>
+                        <span class="customizer-hint"><i class="fa-solid fa-bolt" style="color: var(--accent-orange)"></i> Live updates code below</span>
+                    </div>
+                    <div class="playground-inputs" id="input-variables-group">
+                        <!-- Dynamic inputs depending on selected code variables -->
+                    </div>
+                </div>
+
+                <!-- Live Self-Contained Code View & Action Buttons -->
+                <div class="code-container">
+                    <div class="code-header">
+                        <span class="lang-indicator"><i class="fa-solid fa-terminal" style="color: var(--accent-cyan)"></i> SELF-CONTAINED PYTHON CODE</span>
+                        <div class="code-actions">
+                            <button class="btn-copy" id="copy-btn">
+                                <i class="fa-regular fa-copy"></i>
+                                <span id="copy-btn-text">Copy Code</span>
+                            </button>
+                            <button class="btn-run" id="run-btn">
+                                <i class="fa-solid fa-play"></i>
+                                <span>Run Code</span>
+                            </button>
+                        </div>
+                    </div>
+                    <!-- pre-code formatted for PrismJS -->
+                    <pre><code class="language-python" id="code-display"># Initializing Python environment...
+# Please wait a moment while WebAssembly compiles.</code></pre>
+                </div>
+
+                <!-- Interactive Playground Console Output -->
+                <div class="console-container">
+                    <div class="console-header">
+                        <span class="console-title">
+                            <i class="fa-solid fa-code-merge"></i>
+                            Execution Output
+                        </span>
+                        <span class="lang-indicator" style="font-size: 0.75rem;">CONSOLE LOG</span>
+                    </div>
+                    <div class="console-playground">
+                        <pre class="console-output-box" id="console-output">Press "Run Code" above to execute this script in the browser sandbox.</pre>
+                    </div>
+                </div>
+            </section>
+        </div>
+        </div><!-- End #hub-view -->
+
+        <!-- Full Python Sandbox Mode View (Hidden by default) -->
+        <div id="sandbox-view" class="sandbox-view-container" style="display: none;">
+            <section class="glass-panel full-sandbox-panel">
+                <div class="sandbox-header">
+                    <div class="sandbox-title">
+                        <i class="fa-solid fa-code" style="color: var(--accent-cyan); font-size: 1.4rem;"></i>
+                        <span>Python WebAssembly Interactive Sandbox</span>
+                    </div>
+                    <div class="sandbox-actions">
+                        <button class="action-btn" id="btn-load-ctf-demo" title="Load automated CTF reconnaissance &amp; audit script">
+                            <i class="fa-solid fa-user-secret" style="color: var(--accent-green);"></i> Load CTF Recon Script
+                        </button>
+                        <button class="action-btn" id="btn-clear-editor" title="Clear Editor Content">
+                            <i class="fa-solid fa-eraser"></i> Clear Code
+                        </button>
+                        <button class="action-btn btn-run-sandbox" id="btn-run-sandbox" title="Execute Python script in WASM sandbox">
+                            <i class="fa-solid fa-play"></i> Run Sandbox Code
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Top Half: Python Code Editor -->
+                <div class="sandbox-editor-wrapper">
+                    <div class="editor-header-bar">
+                        <span class="editor-tab"><i class="fa-brands fa-python" style="color: var(--accent-orange);"></i> sandbox_main.py (Live Editor)</span>
+                        <span class="editor-hint"><i class="fa-regular fa-keyboard"></i> Type &amp; test custom multi-line Python scripts. All virtual files are accessible.</span>
+                    </div>
+                    <textarea id="sandbox-code-editor" class="sandbox-textarea" spellcheck="false" placeholder="Write or paste your Python code here...&#10;&#10;Example:&#10;import glob&#10;for path in glob.glob('./**/*flag*', recursive=True):&#10;    print('Found Target:', path)"># Live Python WebAssembly Sandbox & IDE
+# Write custom scripts here and execute them directly against the virtual filesystem!
+import os
+import glob
+
+print("=== 🔍 SCANNING WASM VIRTUAL FILESYSTEM FOR CTF ASSETS ===")
+targets = sorted(glob.glob("./**/*", recursive=True))
+for file_path in targets:
+    if "ctf_target" in file_path and os.path.isfile(file_path):
+        print(f"📁 Discovered Asset: {file_path}")
+
+print("\n=== 🚩 EXECUTING FLAG RECOVERY ===")
+try:
+    with open("ctf_target/home/user_flag.txt", "r", encoding="utf-8") as f:
+        print(f"User Flag: {f.read().strip()}")
+except Exception as e:
+    print(f"Flag read error: {e}")
+</textarea>
+                </div>
+
+                <!-- Bottom Half: Execution Terminal Output -->
+                <div class="sandbox-terminal-wrapper">
+                    <div class="console-header">
+                        <span class="console-title">
+                            <i class="fa-solid fa-terminal"></i>
+                            Interactive Sandbox Output
+                        </span>
+                        <div style="display: flex; align-items: center; gap: 0.8rem;">
+                            <span class="lang-indicator" id="sandbox-runtime-badge" style="font-size: 0.75rem;">READY</span>
+                            <button class="btn-delete-file" style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:1rem;" id="btn-clear-sandbox-output" title="Clear output terminal"><i class="fa-solid fa-trash-can"></i></button>
+                        </div>
+                    </div>
+                    <div class="console-playground" style="min-height: 260px; max-height: 500px;">
+                        <pre class="console-output-box" id="sandbox-console-output">Ready for execution. Click "Run Sandbox Code" above to execute your Python script.</pre>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer>
+        <p>Built with <i class="fa-brands fa-python" style="color: var(--accent-cyan)"></i> <a href="https://pyscript.net/" target="_blank">PyScript</a> &amp; WebAssembly. Hosted on <a href="https://pages.github.com/" target="_blank">GitHub Pages</a>.</p>
+    </footer>
+
+    <!-- PrismJS syntax highlighting bundle -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+
+    <!-- JS utility scripts -->
+    <script>
+        function switchMode(mode) {
+            const hubView = document.getElementById("hub-view");
+            const sandboxView = document.getElementById("sandbox-view");
+            const tabHub = document.getElementById("tab-hub");
+            const tabSandbox = document.getElementById("tab-sandbox");
+
+            if (mode === "hub") {
+                hubView.style.display = "block";
+                sandboxView.style.display = "none";
+                tabHub.classList.add("active");
+                tabSandbox.classList.remove("active");
+            } else {
+                hubView.style.display = "none";
+                sandboxView.style.display = "block";
+                tabHub.classList.remove("active");
+                tabSandbox.classList.add("active");
+            }
+        }
+
+        window.readDroppedFiles = function(fileList, pyCallback) {
+            Array.from(fileList).forEach(file => {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    pyCallback(file.name, file.size, e.target.result);
+                };
+                reader.readAsText(file);
+            });
+        };
+    </script>
+
+    <!-- Mount app.py script into PyScript container -->
+    <script type="py" src="./app.py" config='{"files": {"./app.py": "./app.py"}}'></script>
+</body>
+</html>
