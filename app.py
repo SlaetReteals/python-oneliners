@@ -538,6 +538,36 @@ ONE_LINERS = [
         "code": "import sys, os, platform; print(f'Platform: {platform.system()} {platform.release()}\\nPython: {sys.version}\\nEnv Variables Count: {len(os.environ)}')",
         "description": "Displays details about the local platform, OS, Python version, and basic environment diagnostics.",
         "variables": []
+    },
+    {
+        "id": "audit_suid_files",
+        "title": "System Auditing: Linux SUID File Finder",
+        "category": "vulnscan",
+        "code": "import os, stat; print('\\n'.join([os.path.join(r, f) for r, _, fs in os.walk(directory) for f in fs if os.path.isfile(os.path.join(r, f)) and (os.stat(os.path.join(r, f)).st_mode & stat.S_ISUID)]))",
+        "description": "Recursively scans a directory for files that have the SUID (Set Owner User ID) permission bit set. Useful for identifying binary-level privilege escalation risks on Unix/Linux systems.",
+        "variables": [
+            {"name": "directory", "default": "'.'", "label": "Audit Directory"}
+        ]
+    },
+    {
+        "id": "audit_world_writable_dirs",
+        "title": "System Auditing: World-Writable Directory Finder",
+        "category": "vulnscan",
+        "code": "import os, stat; print('\\n'.join([os.path.join(r, d) for r, ds, _ in os.walk(directory) for d in ds if os.path.isdir(os.path.join(r, d)) and (os.stat(os.path.join(r, d)).st_mode & stat.S_IWOTH)]))",
+        "description": "Recursively checks a directory tree for any folders that are world-writable (write access allowed for others). Essential for identifying weak directory permission bounds.",
+        "variables": [
+            {"name": "directory", "default": "'.'", "label": "Audit Directory"}
+        ]
+    },
+    {
+        "id": "audit_plaintext_creds",
+        "title": "System Auditing: Plaintext Credentials Finder",
+        "category": "vulnscan",
+        "code": "import os, re; print('\\n'.join([f'{os.path.join(r, f)}:L{i+1} -> {l.strip()}' for r, _, fs in os.walk(directory) for f in fs if f.endswith(('.env', '.conf', '.json', '.txt', '.ini')) for i, l in enumerate(open(os.path.join(r, f), errors='ignore')) if re.search(r'password|secret|api_key|token', l, re.IGNORECASE)]))",
+        "description": "Recursively scans common configuration files (.env, .conf, .ini, .json) in a directory for security-related keywords like password, secret, or token to check for plaintext credential leaks.",
+        "variables": [
+            {"name": "directory", "default": "'.'", "label": "Audit Directory"}
+        ]
     }
 ]
 
