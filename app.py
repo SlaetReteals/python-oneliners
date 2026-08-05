@@ -520,6 +520,26 @@ ONE_LINERS = [
             {"name": "filepath", "default": "'server.log'", "label": "Target Document", "type": "file"},
             {"name": "exclude_term", "default": "192.168.1.10", "label": "Term to Exclude", "type": "string"}
         ]
+    },
+    {
+        "id": "vuln_template_1",
+        "title": "Vulnerability Scan Template 1 (Placeholder)",
+        "category": "vulnscan",
+        "code": "# Placeholder for custom vulnerability scan logic\n# Update this template with your custom auditing or scanning code.\nprint('Vulnerability Scan Template 1 loaded. Ready for custom logic.')",
+        "description": "Template placeholder for custom vulnerability scan/audit code. Define inputs and execute scripts here.",
+        "variables": [
+            {"name": "custom_param_1", "default": "'value1'", "label": "Custom Parameter 1"}
+        ]
+    },
+    {
+        "id": "vuln_template_2",
+        "title": "Vulnerability Scan Template 2 (Placeholder)",
+        "category": "vulnscan",
+        "code": "# Placeholder for custom vulnerability scan logic\n# Update this template with your custom auditing or scanning code.\nprint('Vulnerability Scan Template 2 loaded. Ready for custom logic.')",
+        "description": "Template placeholder for custom vulnerability scan/audit code. Define inputs and execute scripts here.",
+        "variables": [
+            {"name": "custom_param_2", "default": "'value2'", "label": "Custom Parameter 2"}
+        ]
     }
 ]
 
