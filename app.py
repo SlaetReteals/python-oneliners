@@ -319,6 +319,51 @@ ONE_LINERS = [
         ]
     },
     {
+        "id": "ir_webshell_hunter",
+        "title": "Incident Response: Web Shell & Backdoor Hunter",
+        "category": "security",
+        "code": "import os; print('\\n'.join([os.path.join(r, f) for r, _, fs in os.walk(directory) for f in fs if f.endswith(ext) and any(k in open(os.path.join(r, f), 'r', errors='ignore').read() for k in keywords.split(','))]))",
+        "description": "Recursively scans a directory for files of a specific extension containing suspicious keywords often associated with web shells, backdoors, or unauthorized remote execution.",
+        "variables": [
+            {"name": "directory", "default": "'.'", "label": "Search Directory"},
+            {"name": "ext", "default": "'.php'", "label": "File Extension (e.g. .php, .py)"},
+            {"name": "keywords", "default": "'eval,exec,system,subprocess,socket'", "label": "Keywords (comma-separated)"}
+        ]
+    },
+    {
+        "id": "ir_exploit_scanner",
+        "title": "Incident Response: Exploit Signature Log Scanner",
+        "category": "security",
+        "code": "import re; logs = open(filepath, 'r', errors='ignore').readlines(); attacks = [f'Line {i+1}: {line.strip()}' for i, line in enumerate(logs) if re.search(pattern, line, re.IGNORECASE)]; print(f'Detected {len(attacks)} potential exploits:\\n' + '\\n'.join(attacks[:limit]))",
+        "description": "Scans access logs or general system logs for regular expression signatures of web exploits like SQL Injection (SQLi), Cross-Site Scripting (XSS), and Path Traversal.",
+        "variables": [
+            {"name": "filepath", "default": "'server.log'", "label": "Log File", "type": "file"},
+            {"name": "pattern", "default": "'union\\\\s+select|select\\\\s+.*\\\\s+from|\\\\.\\\\./|<script>|%27|etc/passwd'", "label": "Regex Pattern"},
+            {"name": "limit", "default": "20", "label": "Max Lines to Print"}
+        ]
+    },
+    {
+        "id": "ir_timeline_auditor",
+        "title": "Incident Response: Modified File Auditor",
+        "category": "security",
+        "code": "import os, time; now = time.time(); print('\\n'.join([f'{os.path.join(r, f)} - {time.ctime(os.path.getmtime(os.path.join(r, f)))}' for r, _, fs in os.walk(directory) for f in fs if now - os.path.getmtime(os.path.join(r, f)) < timeframe_hours * 3600]))",
+        "description": "Recursively lists all files in a directory that were modified within the last N hours. Essential for post-compromise timeline reconstruction and identifying newly created or modified backdoor files.",
+        "variables": [
+            {"name": "directory", "default": "'.'", "label": "Search Directory"},
+            {"name": "timeframe_hours", "default": "24", "label": "Timeframe (Hours)"}
+        ]
+    },
+    {
+        "id": "ir_http_status",
+        "title": "Incident Response: HTTP Status Summarizer",
+        "category": "security",
+        "code": "import re, collections; codes = re.findall(r'\"\\s+([1-5][0-9]{2})\\s+', open(filepath, 'r', errors='ignore').read()); print('\\n'.join([f'HTTP {code}: {count} occurrences' for code, count in collections.Counter(codes).most_common()]))",
+        "description": "Parses web server logs to count and summarize HTTP response status codes. A high volume of 404 or 401/403 errors can indicate vulnerability scanning or credential brute-forcing.",
+        "variables": [
+            {"name": "filepath", "default": "'server.log'", "label": "Log File", "type": "file"}
+        ]
+    },
+    {
         "id": "csv_to_json",
         "title": "CSV to JSON Converter & Inspector",
         "category": "files",
