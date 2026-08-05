@@ -522,24 +522,22 @@ ONE_LINERS = [
         ]
     },
     {
-        "id": "vuln_template_1",
-        "title": "Vulnerability Scan Template 1 (Placeholder)",
+        "id": "audit_file_permissions",
+        "title": "System Auditing: File Write Access Checker",
         "category": "vulnscan",
-        "code": "# Placeholder for custom vulnerability scan logic\n# Update this template with your custom auditing or scanning code.\nprint('Vulnerability Scan Template 1 loaded. Ready for custom logic.')",
-        "description": "Template placeholder for custom vulnerability scan/audit code. Define inputs and execute scripts here.",
+        "code": "import os; print('\\n'.join([f'{f} is WRITABLE!' for f in os.listdir(directory) if os.path.isfile(os.path.join(directory, f)) and os.access(os.path.join(directory, f), os.W_OK)]))",
+        "description": "Audits a directory to identify any files with write permissions. Useful for verifying that sensitive files are not world-writable.",
         "variables": [
-            {"name": "custom_param_1", "default": "'value1'", "label": "Custom Parameter 1"}
+            {"name": "directory", "default": "'.'", "label": "Audit Directory"}
         ]
     },
     {
-        "id": "vuln_template_2",
-        "title": "Vulnerability Scan Template 2 (Placeholder)",
+        "id": "audit_env_inspector",
+        "title": "System Auditing: Environment & OS Inspector",
         "category": "vulnscan",
-        "code": "# Placeholder for custom vulnerability scan logic\n# Update this template with your custom auditing or scanning code.\nprint('Vulnerability Scan Template 2 loaded. Ready for custom logic.')",
-        "description": "Template placeholder for custom vulnerability scan/audit code. Define inputs and execute scripts here.",
-        "variables": [
-            {"name": "custom_param_2", "default": "'value2'", "label": "Custom Parameter 2"}
-        ]
+        "code": "import sys, os, platform; print(f'Platform: {platform.system()} {platform.release()}\\nPython: {sys.version}\\nEnv Variables Count: {len(os.environ)}')",
+        "description": "Displays details about the local platform, OS, Python version, and basic environment diagnostics.",
+        "variables": []
     }
 ]
 
